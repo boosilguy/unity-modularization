@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class TestModule01 : ModuleFoundation
+public class SettingModuleManager : ModuleFoundation
 {
 
 }

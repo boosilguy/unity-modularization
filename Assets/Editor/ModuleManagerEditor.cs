@@ -26,6 +26,7 @@ public class ModuleManagerEditor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+
         if (modules.isExpanded)
         {
             list.DoLayoutList();
@@ -38,35 +39,6 @@ public class ModuleManagerEditor : Editor
         }
 
         serializedObject.ApplyModifiedProperties();
-
-        
-        /*
-        EditorGUILayout.PropertyField(modules, new GUIContent("Module List"), GUILayout.Height(EditorGUIUtility.singleLineHeight));
-        if (modules.isExpanded)
-        {
-            list.DoLayoutList();
-
-            if (Event.current.type == EventType.MouseDrag && list.index >= 0)
-            {
-                int selectedIndex = GetSelectedIndexWithFallback(list);
-                if (selectedIndex >= 0)
-                {
-                    list.ele = selectedIndex;
-                    DragAndDrop.PrepareStartDrag();
-                    DragAndDrop.objectReferences = new UnityEngine.Object[] { serializedObject.targetObject };
-                    DragAndDrop.StartDrag("ReorderableList");
-                    Event.current.Use();
-                }
-            }
-        }
-
-        if (GUILayout.Button("Reload modules"))
-        {
-            ModuleInitUtil.InitModules(manager);
-        }
-
-        serializedObject.ApplyModifiedProperties();
-        */
     }
 
     void OnDrawHeader(Rect rect)
