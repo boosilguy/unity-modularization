@@ -4,7 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class SettingModuleManager : ModuleFoundation
+public partial class SettingModuleManager : ModuleFoundation
 {
+    Dictionary<ScriptFoundation, List<SettingAttribute>> SettingDic { get; set; } = new Dictionary<ScriptFoundation, List<SettingAttribute>>();
 
+    public void Initialize()
+    {
+
+    }
+
+    
 }

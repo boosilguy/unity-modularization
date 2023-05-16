@@ -18,7 +18,7 @@ public enum ETransition
     Destroy
 }
 
-public class ModuleFoundation : ScriptableObject
+public class ModuleFoundation : ScriptableObject, ScriptFoundation
 {
 
     public EModuleState CurrentState { get; private set; }
