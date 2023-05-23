@@ -12,6 +12,4 @@ public partial class SettingModuleManager : ModuleFoundation
     {
 
     }
-
-    
 }

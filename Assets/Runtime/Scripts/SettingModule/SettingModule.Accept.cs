@@ -7,7 +7,7 @@ using UnityEngine;
 
 public partial class SettingModuleManager : ModuleFoundation
 {
-    private void AcceptAttribute(SettingAttribute attribute, object value) => attribute.Accept.Invoke(attribute.ScriptFoundation, attribute.Member, value);
+    private void AcceptAttribute(SettingAttribute attribute) => attribute.Accept.Invoke(attribute.ScriptFoundation, attribute.Member);
 
     public void AcceptScriptFoundation(ScriptFoundation scriptFoundation)
     {
@@ -22,7 +22,7 @@ public partial class SettingModuleManager : ModuleFoundation
         foreach (MemberInfo member in members)
         {
             var settingAttribute = member.GetCustomAttribute<SettingAttribute>();
-            // AcceptAttribute(settingAttribute, settingAttribute.)
+            AcceptAttribute(settingAttribute);
         }
     }
 }
