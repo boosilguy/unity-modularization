@@ -18,7 +18,7 @@ public enum ETransition
     Destroy
 }
 
-public class ModuleFoundation : ScriptableObject, ScriptFoundation
+public class ModuleFoundation : ScriptableObjectFoundation
 {
 
     public EModuleState CurrentState { get; private set; }
@@ -48,12 +48,14 @@ public class ModuleFoundation : ScriptableObject, ScriptFoundation
 
     public ModuleFoundation()
     {
+        CurrentState = EModuleState.Created;
+
         transitions = new Dictionary<StateTransition, EModuleState>();
         lifeCycleActions = new Dictionary<EModuleState, ModuleLifeCycle>();
         
         transitions.Add(new StateTransition(EModuleState.Created, ETransition.Initialize), EModuleState.Inactive);
         transitions.Add(new StateTransition(EModuleState.Inactive, ETransition.None), EModuleState.Active);
-        transitions.Add(new StateTransition(EModuleState.Active, ETransition.None), EModuleState.Inactive);
+        transitions.Add(new StateTransition(EModuleState.Active, ETransition.None), EModuleState.Active);
         transitions.Add(new StateTransition(EModuleState.Inactive, ETransition.Destroy), EModuleState.Destroyed);
         transitions.Add(new StateTransition(EModuleState.Active, ETransition.Destroy), EModuleState.Destroyed);
         
@@ -61,7 +63,7 @@ public class ModuleFoundation : ScriptableObject, ScriptFoundation
         lifeCycleActions.Add(EModuleState.Active, ModuleUpdate);
         lifeCycleActions.Add(EModuleState.Destroyed, ModuleTerminate);
         
-        CurrentState = EModuleState.Created;
+        Process(ETransition.Initialize);
     }
 
     public void RunOnMainThread(params Action[] action)
