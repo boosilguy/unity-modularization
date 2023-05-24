@@ -23,6 +23,11 @@ public partial class SettingModuleManager : ModuleFoundation
         {
             var settingAttribute = member.GetCustomAttribute<SettingAttribute>();
             AcceptAttribute(scriptFoundation, settingAttribute, member);
+
+            if (!ItemsInScriptFoundation.ContainsKey(scriptFoundation))
+                ItemsInScriptFoundation.Add(scriptFoundation, new List<SettingAttribute>());
+
+            ItemsInScriptFoundation[scriptFoundation].Add(settingAttribute);
         }
     }
 }
