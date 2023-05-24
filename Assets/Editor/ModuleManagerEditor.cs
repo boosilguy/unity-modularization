@@ -14,18 +14,19 @@ public class ModuleManagerEditor : Editor
     {
         manager = target as ModuleManager;
         modules = serializedObject.FindProperty("modules");
-        list = new ReorderableList(serializedObject, modules, true, true, false, true)
-        {
-            drawHeaderCallback = OnDrawHeader,
-            drawElementCallback = OnDrawElement,
-            onReorderCallback = OnReorder,
-            elementHeightCallback = CalculateCallHeight
-        };
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+        if (list == null)
+            list = new ReorderableList(serializedObject, modules, true, true, false, true)
+            {
+                drawHeaderCallback = OnDrawHeader,
+                drawElementCallback = OnDrawElement,
+                onReorderCallback = OnReorder,
+                elementHeightCallback = CalculateCallHeight
+            };
 
         if (modules.isExpanded)
         {

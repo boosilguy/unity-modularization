@@ -6,9 +6,4 @@ using UnityEngine;
 public class TestModule02 : ModuleFoundation
 {
     [Int(name: "InteagerValue", tag: "Example", 10)] int value;
-
-    public override void ModuleInitialize()
-    {
-        UnityEngine.Debug.Log(value);
-    }
 }

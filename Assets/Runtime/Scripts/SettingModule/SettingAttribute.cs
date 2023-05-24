@@ -31,7 +31,8 @@ public class SettingAttribute : Attribute
         FieldInfo fieldInfo = member as FieldInfo;
         if (fieldInfo != null)
         {
-            if (fieldInfo.FieldType == Value.GetType())
+            Type fieldType = fieldInfo.FieldType;
+            if (fieldType == Value.GetType())
             {
                 fieldInfo.SetValue(scriptFoundation, Value);
                 ScriptFoundation = scriptFoundation;
@@ -40,7 +41,7 @@ public class SettingAttribute : Attribute
             else
             {
                 Debug.LogError(RichTextUtil.GetColorfulText(
-                    new ColorfulText("Invalid assignment", Color.red),
+                    new ColorfulText("Invalid assignment ", Color.red),
                     new ColorfulText(": Mismatch data types ", Color.white),
                     new ColorfulText($"{member.Name} ({member.MemberType})", Color.yellow),
                     new ColorfulText(" and ", Color.white),
@@ -51,7 +52,7 @@ public class SettingAttribute : Attribute
         else
         {
             Debug.LogError(RichTextUtil.GetColorfulText(
-                    new ColorfulText("Invalid assignment", Color.red),
+                    new ColorfulText("Invalid assignment ", Color.red),
                     new ColorfulText(": The field is null ", Color.white),
                     new ColorfulText(member.Name, Color.yellow)));
             throw new NullReferenceException();
