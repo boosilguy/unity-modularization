@@ -99,8 +99,8 @@ public class ModuleFoundation : ScriptableObjectFoundation
         {
             throw new Exception(
                 RichTextUtil.GetColorfulText(
-                    new ColorfulText("Invalid transition", Color.red),
-                    new ColorfulText(": Cannot execute command ", Color.white),
+                    new ColorfulText("[Invalid transition] ", Color.red),
+                    new ColorfulText("Cannot execute command ", Color.white),
                     new ColorfulText(transition.ToString(), Color.yellow),
                     new ColorfulText(" from state ", Color.white),
                     new ColorfulText(CurrentState.ToString(), Color.yellow))

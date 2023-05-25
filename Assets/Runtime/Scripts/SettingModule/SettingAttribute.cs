@@ -40,22 +40,20 @@ public class SettingAttribute : Attribute
             }
             else
             {
-                Debug.LogError(RichTextUtil.GetColorfulText(
-                    new ColorfulText("Invalid assignment ", Color.red),
-                    new ColorfulText(": Mismatch data types ", Color.white),
+                throw new ArgumentException(RichTextUtil.GetColorfulText(
+                    new ColorfulText("[Invalid assignment] ", Color.red),
+                    new ColorfulText("Mismatch data types ", Color.white),
                     new ColorfulText($"{member.Name} ({member.MemberType})", Color.yellow),
                     new ColorfulText(" and ", Color.white),
                     new ColorfulText($"{Value} ({Value.GetType()})", Color.yellow)));
-                throw new ArgumentException();
             }
         }
         else
         {
-            Debug.LogError(RichTextUtil.GetColorfulText(
-                    new ColorfulText("Invalid assignment ", Color.red),
-                    new ColorfulText(": The field is null ", Color.white),
+            throw new NullReferenceException(RichTextUtil.GetColorfulText(
+                    new ColorfulText("[Invalid assignment] ", Color.red),
+                    new ColorfulText("The field is null => ", Color.white),
                     new ColorfulText(member.Name, Color.yellow)));
-            throw new NullReferenceException();
         }
     }
 }
