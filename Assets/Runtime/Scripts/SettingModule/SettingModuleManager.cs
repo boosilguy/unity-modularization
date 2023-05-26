@@ -51,7 +51,7 @@ public partial class SettingModuleManager : ModuleFoundation
     }
 
     // callbacksItemUpdate[settingName] += updateEvent 구현에 대해 고민해 볼 것
-    public void AddUpdateEvent(string settingName, Action<object, object> updateEvent)
+    public void AddUpdateEvent(string settingName, SettingUpdateEvent<object, object> updateEvent)
     {
         if (!callbacksItemUpdate.ContainsKey(settingName))
         {
@@ -68,7 +68,7 @@ public partial class SettingModuleManager : ModuleFoundation
         callbacksItemUpdate[settingName].Changed += updateEvent;
     }
 
-    public void RemoveUpdateEvent(string settingName, Action<object, object> updateEvent) 
+    public void RemoveUpdateEvent(string settingName, SettingUpdateEvent<object, object> updateEvent) 
     {
         if (!callbacksItemUpdate.ContainsKey(settingName))
         {

@@ -7,8 +7,9 @@ using UnityEngine;
 
 public partial class SettingModuleManager : ModuleFoundation
 {
+    public delegate void SettingUpdateEvent<arg1, arg2>(arg1 oldValue, arg2 newValue);
     class SettingCallbackContainer
     {
-        internal event Action<object, object> Changed;
+        internal event SettingUpdateEvent<object, object> Changed;
     }
 }
