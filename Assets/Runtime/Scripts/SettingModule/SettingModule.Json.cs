@@ -20,7 +20,7 @@ public partial class SettingModuleManager : ModuleFoundation
         writer.Flush();
     }
 
-    private T DeserializeObject<T>(Stream stream)
+    private T Deserialize<T>(Stream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);
         StreamReader reader = new StreamReader(stream);

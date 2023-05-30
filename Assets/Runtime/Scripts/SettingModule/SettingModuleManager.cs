@@ -18,7 +18,8 @@ public partial class SettingModuleManager : ModuleFoundation
     
     public void Initialize()
     {
-
+        ItemsInMemory.Clear();
+        ItemsInMemory = Load();
     }
 
     public void Save()
@@ -49,19 +50,36 @@ public partial class SettingModuleManager : ModuleFoundation
             Serialize(ItemsInMemory, fs);
         }
     }
+    
+    public List<SettingAttribute> Load()
+    {
+        List<SettingAttribute> result;
+        if (Application.isEditor)
+            result = LoadSettingsFromDirectory(
+                Path.Combine(
+                    SettingModuleConstValue.DEFAULT_EDITOR_SAVE_DIRECTORY, 
+                    SettingModuleConstValue.DEFAULT_FILENAME_EXTENSION));
+        else
+            result = LoadSettingsFromDirectory(
+                Path.Combine(
+                    SettingModuleConstValue.DEFAULT_BUILD_SAVE_DIRECTORY, 
+                    SettingModuleConstValue.DEFAULT_FILENAME_EXTENSION));
+        return result;
+    }
 
-    // callbacksItemUpdate[settingName] += updateEvent 구현에 대해 고민해 볼 것
     public void AddUpdateEvent(string settingName, SettingUpdateEvent<object, object> updateEvent)
     {
         if (!callbacksItemUpdate.ContainsKey(settingName))
         {
             if (!itemsInScriptFoundation.Any(item => item.Value.Any(setting => setting.Name == settingName)))
             {
-                throw new NullReferenceException(
+                Debug.LogWarning(
                     RichTextUtil.GetColorfulText(
-                        new ColorfulText("[Invalid assignment] ", Color.red),
+                        new ColorfulText("[Not found] ", Color.red),
                         new ColorfulText("The setting name is not found => ", Color.white),
                         new ColorfulText(settingName, Color.yellow)));
+
+                return;
             }
             callbacksItemUpdate.Add(settingName, new SettingCallbackContainer());
         }
@@ -74,10 +92,65 @@ public partial class SettingModuleManager : ModuleFoundation
         {
             Debug.LogWarning(
                 RichTextUtil.GetColorfulText(
-                    new ColorfulText("[Invalid assignment] ", Color.red),
+                    new ColorfulText("[Not found] ", Color.red),
                     new ColorfulText("The setting name is not found => ", Color.white),
                     new ColorfulText(settingName, Color.yellow)));
+
+            return;
         }
         callbacksItemUpdate[settingName].Changed -= updateEvent;
+    }
+
+    private List<SettingAttribute> LoadSettingsFromDirectory(string directory)
+    {
+        List<SettingAttribute> result = null;
+        if (!File.Exists(directory))
+        {
+            throw new FileNotFoundException(
+                RichTextUtil.GetColorfulText(
+                    new ColorfulText("The setting file is not found (", Color.white),
+                    new ColorfulText(directory, Color.yellow),
+                    new ColorfulText(")", Color.white)));
+        }
+        else
+        {
+            using (FileStream fs = new FileStream(directory, FileMode.OpenOrCreate))
+            {
+                result = Deserialize<List<SettingAttribute>>(fs);
+            }
+
+            if (result == null)
+            {
+                Debug.Log(
+                    RichTextUtil.GetColorfulText(
+                        new ColorfulText("[Fail to load] ", Color.red),
+                        new ColorfulText("The setting list is empty (", Color.white),
+                        new ColorfulText(directory, Color.yellow),
+                        new ColorfulText(")", Color.white)));
+                return null;
+            }
+            else
+            {
+                Debug.Log(
+                    RichTextUtil.GetColorfulText(
+                        new ColorfulText("[Initialized] ", Color.green),
+                        new ColorfulText("Complete load setting file (", Color.white),
+                        new ColorfulText(directory, Color.yellow),
+                        new ColorfulText(")", Color.white)));
+                return result;
+            }
+        }
+    }
+
+    private void Merge()
+    {
+        foreach (SettingAttribute item in ItemsInMemory)
+        {
+            if (!itemsInScriptFoundation.ContainsKey(item.ScriptFoundation))
+            {
+                itemsInScriptFoundation.Add(item.ScriptFoundation, new List<SettingAttribute>());
+            }
+            itemsInScriptFoundation[item.ScriptFoundation].Add(item);
+        }
     }
 }
