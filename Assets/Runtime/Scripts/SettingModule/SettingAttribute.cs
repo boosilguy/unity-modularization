@@ -26,6 +26,30 @@ public class SettingAttribute : Attribute
         Accept = AcceptField;
     }
 
+    public virtual void SetValue(object value)
+    {
+        if (Value.GetType() == value.GetType())
+            Value = value;
+        else
+            throw new ArgumentException(RichTextUtil.GetColorfulText(
+                new ColorfulText("Mismatch data types ", Color.white),
+                new ColorfulText($"{Value} ({Value.GetType()})", Color.yellow),
+                new ColorfulText(" and ", Color.white),
+                new ColorfulText($"{value} ({value.GetType()})", Color.yellow)));
+    }
+
+    public virtual void SetValue(SettingAttribute setting)
+    {
+        if (this.GetType() == setting.GetType())
+            SetValue(setting.Value);
+        else
+            throw new ArgumentException(RichTextUtil.GetColorfulText(
+                new ColorfulText("Mismatch data types ", Color.white),
+                new ColorfulText($"{this.Name} ({this.Value})", Color.yellow),
+                new ColorfulText(" and ", Color.white),
+                new ColorfulText($"{setting.Name} ({setting.Value})", Color.yellow)));
+    }
+
     internal virtual void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
     {
         FieldInfo fieldInfo = member as FieldInfo;
@@ -41,7 +65,6 @@ public class SettingAttribute : Attribute
             else
             {
                 throw new ArgumentException(RichTextUtil.GetColorfulText(
-                    new ColorfulText("[Invalid assignment] ", Color.red),
                     new ColorfulText("Mismatch data types ", Color.white),
                     new ColorfulText($"{member.Name} ({member.MemberType})", Color.yellow),
                     new ColorfulText(" and ", Color.white),
@@ -51,7 +74,6 @@ public class SettingAttribute : Attribute
         else
         {
             throw new NullReferenceException(RichTextUtil.GetColorfulText(
-                    new ColorfulText("[Invalid assignment] ", Color.red),
                     new ColorfulText("The field is null => ", Color.white),
                     new ColorfulText(member.Name, Color.yellow)));
         }
@@ -60,12 +82,22 @@ public class SettingAttribute : Attribute
 
 public class IntAttribute : SettingAttribute
 {
-    public new int Value { get; set; }
+    private new int Value { get; set; }
 
     [JsonConstructor]
     public IntAttribute (string name, string tag, int value) : base(name, value, tag)
     {
         Value = value;
+    }
+
+    public override void SetValue(object value)
+    {
+        base.SetValue(value);
+    }
+
+    public override void SetValue(SettingAttribute setting)
+    {
+        base.SetValue(setting);
     }
 
     internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
@@ -76,33 +108,78 @@ public class IntAttribute : SettingAttribute
 
 public class FloatAttribute : SettingAttribute
 {
-    public new float Value { get; set; }
+    private new float Value { get; set; }
 
     [JsonConstructor]
     public FloatAttribute(string name, string tag, float value) : base(name, value, tag)
     {
         Value = value;
     }
+
+    public override void SetValue(object value)
+    {
+        base.SetValue(value);
+    }
+
+    public override void SetValue(SettingAttribute setting)
+    {
+        base.SetValue(setting);
+    }
+
+    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    {
+        base.AcceptField(scriptFoundation, member);
+    }
 }
 
 public class StringAttribute : SettingAttribute
 {
-    public new string Value { get; set; }
+    private new string Value { get; set; }
 
     [JsonConstructor]
     public StringAttribute(string name, string tag, string value) : base(name, value, tag)
     {
         Value = value;
     }
+
+    public override void SetValue(object value)
+    {
+        base.SetValue(value);
+    }
+
+    public override void SetValue(SettingAttribute setting)
+    {
+        base.SetValue(setting);
+    }
+
+    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    {
+        base.AcceptField(scriptFoundation, member);
+    }
 }
 
 public class BoolAttribute : SettingAttribute
 {
-    public new bool Value { get; set; }
+    private new bool Value { get; set; }
 
     [JsonConstructor]
     public BoolAttribute(string name, string tag, bool value) : base(name, value, tag)
     {
         Value = value;
+    }
+
+    public override void SetValue(object value)
+    {
+        base.SetValue(value);
+    }
+
+    public override void SetValue(SettingAttribute setting)
+    {
+        base.SetValue(setting);
+    }
+
+    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    {
+        base.AcceptField(scriptFoundation, member);
     }
 }

@@ -13,9 +13,24 @@ public partial class SettingModuleManager : ModuleFoundation
 {
     private Dictionary<ScriptFoundation, List<SettingAttribute>> itemsInScriptFoundation = new Dictionary<ScriptFoundation, List<SettingAttribute>>();
     private Dictionary<string, SettingCallbackContainer> callbacksItemUpdate = new Dictionary<string, SettingCallbackContainer>();
-    
+    private List<SettingAttribute> itemsInRuntime;
+
     private List<SettingAttribute> ItemsInMemory { get; set; } = new List<SettingAttribute>();
-    
+    private List<SettingAttribute> ItemsInNew { get; set; } = new List<SettingAttribute>();
+    private List<SettingAttribute> ItemsInRuntime
+    {
+        get
+        {
+            /*
+            if (itemsInRuntime == null)
+            {
+                var result = new List<SettingAttribute>();
+                result.AddRange(ItemsInMemory);
+            }*/
+            return;
+        }
+    }
+
     public void Initialize()
     {
         ItemsInMemory.Clear();
@@ -144,13 +159,22 @@ public partial class SettingModuleManager : ModuleFoundation
 
     private void Merge()
     {
+        // Merge items in memory and items in script foundation
         foreach (SettingAttribute item in ItemsInMemory)
         {
-            if (!itemsInScriptFoundation.ContainsKey(item.ScriptFoundation))
+            IEnumerable<SettingAttribute> foundInScript = itemsInScriptFoundation.Values.SelectMany(item => item).Where(setting => setting.Name == item.Name);
+
+            foreach (SettingAttribute itemFoundInScript in foundInScript)
             {
-                itemsInScriptFoundation.Add(item.ScriptFoundation, new List<SettingAttribute>());
+                itemFoundInScript.SetValue(item);
+                itemFoundInScript.Accept.Invoke(itemFoundInScript.ScriptFoundation, itemFoundInScript.Member);
             }
-            itemsInScriptFoundation[item.ScriptFoundation].Add(item);
         }
+
+        IEnumerable<string> itemNameInMemory = ItemsInMemory.Select(item => item.Name);
+        IEnumerable<SettingAttribute> foundNotExistInScript = itemsInScriptFoundation.Values.SelectMany(item => item).
+                                                              Where(setting => !itemNameInMemory.Contains(setting.Name)).
+                                                              DistinctBy(item => item.Name);
+        
     }
 }
