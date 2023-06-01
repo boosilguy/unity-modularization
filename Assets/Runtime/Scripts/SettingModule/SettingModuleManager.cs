@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -13,30 +14,30 @@ public partial class SettingModuleManager : ModuleFoundation
 {
     private Dictionary<ScriptFoundation, List<SettingAttribute>> itemsInScriptFoundation = new Dictionary<ScriptFoundation, List<SettingAttribute>>();
     private Dictionary<string, SettingCallbackContainer> callbacksItemUpdate = new Dictionary<string, SettingCallbackContainer>();
-    private List<SettingAttribute> itemsInRuntime;
 
-    private List<SettingAttribute> ItemsInMemory { get; set; } = new List<SettingAttribute>();
+    private List<SettingAttribute> ItemsInSaved { get; set; } = new List<SettingAttribute>();
     private List<SettingAttribute> ItemsInNew { get; set; } = new List<SettingAttribute>();
-    private List<SettingAttribute> ItemsInRuntime
+    private List<SettingAttribute> ItemsInRuntime => ItemsInSaved.Concat(ItemsInNew).OrderBy(item => item.Tag).ThenBy(item => item.Name).ToList();
+
+    bool init = false;
+
+    /// <summary>
+    /// Setting module을 초기화합니다.
+    /// </summary>
+    public void Initialize()
     {
-        get
+        if (!init)
         {
-            /*
-            if (itemsInRuntime == null)
-            {
-                var result = new List<SettingAttribute>();
-                result.AddRange(ItemsInMemory);
-            }*/
-            return;
+            ClearAllContainer();
+            ItemsInSaved = Load();
+            ItemsInNew = GetNewItems();
+            init = true;
         }
     }
 
-    public void Initialize()
-    {
-        ItemsInMemory.Clear();
-        ItemsInMemory = Load();
-    }
-
+    /// <summary>
+    /// 현재 메모리에 올라간 Setting들을 저장합니다.
+    /// </summary>
     public void Save()
     {
         string directory;
@@ -50,7 +51,7 @@ public partial class SettingModuleManager : ModuleFoundation
             directory = Path.Combine(directory, SettingModuleConstValue.DEFAULT_FILENAME_EXTENSION);
             using (FileStream fs = new FileStream(directory, FileMode.Create))
             {
-                Serialize(ItemsInMemory, fs);
+                Serialize(ItemsInRuntime, fs);
             }
             return;
         }
@@ -62,10 +63,14 @@ public partial class SettingModuleManager : ModuleFoundation
         directory = Path.Combine(directory, SettingModuleConstValue.DEFAULT_FILENAME_EXTENSION);
         using (FileStream fs = new FileStream(directory, FileMode.Create))
         {
-            Serialize(ItemsInMemory, fs);
+            Serialize(ItemsInRuntime, fs);
         }
     }
     
+    /// <summary>
+    /// Local file로부터, Setting을 불러들입니다.
+    /// </summary>
+    /// <returns>Loaded setting list</returns>
     public List<SettingAttribute> Load()
     {
         List<SettingAttribute> result;
@@ -82,6 +87,11 @@ public partial class SettingModuleManager : ModuleFoundation
         return result;
     }
 
+    /// <summary>
+    /// 대상 Setting을 구독하며, 이에 대한 이벤트를 추가합니다.
+    /// </summary>
+    /// <param name="settingName">Setting name</param>
+    /// <param name="updateEvent">Event</param>
     public void AddUpdateEvent(string settingName, SettingUpdateEvent<object, object> updateEvent)
     {
         if (!callbacksItemUpdate.ContainsKey(settingName))
@@ -101,6 +111,11 @@ public partial class SettingModuleManager : ModuleFoundation
         callbacksItemUpdate[settingName].Changed += updateEvent;
     }
 
+    /// <summary>
+    /// 대상 Setting에 구독하였던 이벤트를 제거합니다.
+    /// </summary>
+    /// <param name="settingName">Setting name</param>
+    /// <param name="updateEvent">Event</param>
     public void RemoveUpdateEvent(string settingName, SettingUpdateEvent<object, object> updateEvent) 
     {
         if (!callbacksItemUpdate.ContainsKey(settingName))
@@ -116,14 +131,31 @@ public partial class SettingModuleManager : ModuleFoundation
         callbacksItemUpdate[settingName].Changed -= updateEvent;
     }
 
+    /// <summary>
+    /// Setting 모듈의 Setting 컨테이너들을 초기화합니다.
+    /// </summary>
+    private void ClearAllContainer()
+    {
+        ItemsInSaved.Clear();
+        ItemsInNew.Clear();
+        itemsInScriptFoundation.Clear();
+        callbacksItemUpdate.Clear();
+    }
+
+    /// <summary>
+    /// 디렉토리로부터 Setting 정보를 직렬화합니다.
+    /// </summary>
+    /// <param name="directory">대상 디렉토리</param>
+    /// <returns>직렬화한 Setting list</returns>
     private List<SettingAttribute> LoadSettingsFromDirectory(string directory)
     {
-        List<SettingAttribute> result = null;
+        List<SettingAttribute> result = new List<SettingAttribute>();
         if (!File.Exists(directory))
         {
-            throw new FileNotFoundException(
+            Debug.LogError(
                 RichTextUtil.GetColorfulText(
-                    new ColorfulText("The setting file is not found (", Color.white),
+                    new ColorfulText("[Fail to load] ", Color.red),
+                    new ColorfulText("Not found directory (", Color.white),
                     new ColorfulText(directory, Color.yellow),
                     new ColorfulText(")", Color.white)));
         }
@@ -136,13 +168,12 @@ public partial class SettingModuleManager : ModuleFoundation
 
             if (result == null)
             {
-                Debug.Log(
+                Debug.LogError(
                     RichTextUtil.GetColorfulText(
                         new ColorfulText("[Fail to load] ", Color.red),
                         new ColorfulText("The setting list is empty (", Color.white),
                         new ColorfulText(directory, Color.yellow),
                         new ColorfulText(")", Color.white)));
-                return null;
             }
             else
             {
@@ -152,29 +183,56 @@ public partial class SettingModuleManager : ModuleFoundation
                         new ColorfulText("Complete load setting file (", Color.white),
                         new ColorfulText(directory, Color.yellow),
                         new ColorfulText(")", Color.white)));
-                return result;
             }
         }
+        return result;
     }
 
-    private void Merge()
+    /// <summary>
+    /// 스크립트에 작성된 Setting들 중, 새로 추가된 Setting들을 담는 Container를 초기화합니다. 
+    /// </summary>
+    /// <returns>저장된 Setting외, 스크립트에서만 활용되는 Setting list</returns>
+    private List<SettingAttribute> GetNewItems()
     {
-        // Merge items in memory and items in script foundation
-        foreach (SettingAttribute item in ItemsInMemory)
-        {
-            IEnumerable<SettingAttribute> foundInScript = itemsInScriptFoundation.Values.SelectMany(item => item).Where(setting => setting.Name == item.Name);
-
-            foreach (SettingAttribute itemFoundInScript in foundInScript)
+        IEnumerable<string> itemNameInSaved = ItemsInSaved.Select(item => item.Name);
+        IEnumerable<SettingAttribute> foundNotExistInScript = GetAllSettingsInScripts().Where(setting => !itemNameInSaved.Contains(setting.Name))
+            .GroupBy(item => item.Name)
+            .Select(group =>
             {
-                itemFoundInScript.SetValue(item);
-                itemFoundInScript.Accept.Invoke(itemFoundInScript.ScriptFoundation, itemFoundInScript.Member);
+                var itemWithValue = group.FirstOrDefault(item => item.IsDefaultValue());
+                return itemWithValue ?? group.First();
+            });
+        return foundNotExistInScript.ToList();
+    }
+
+    /// <summary>
+    /// 스크립트에 작성된 Setting들을 Distinct 처리하여 반환하되, 기본값이 아닌 Setting에 대해서 우선적으로 반환합니다. 
+    /// </summary>
+    /// <returns>현재 스크립트에서 활용되는 Setting list</returns>
+    private List<SettingAttribute> GetAllSettingsInScripts()
+    {
+        List<SettingAttribute> result = new List<SettingAttribute>();
+        List<Type> types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(t => typeof(ScriptFoundation).IsAssignableFrom(t)).ToList();
+        
+        IEnumerable<MemberInfo> memberContainer;
+        foreach (var foundation in types)
+        {
+            memberContainer = foundation.GetMembers(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                        .Where(m => m.GetCustomAttribute<SettingAttribute>() != null);
+            foreach (var member in memberContainer)
+            {
+                var settingAttribute = member.GetCustomAttribute<SettingAttribute>();
+                result.Add(settingAttribute);
             }
         }
 
-        IEnumerable<string> itemNameInMemory = ItemsInMemory.Select(item => item.Name);
-        IEnumerable<SettingAttribute> foundNotExistInScript = itemsInScriptFoundation.Values.SelectMany(item => item).
-                                                              Where(setting => !itemNameInMemory.Contains(setting.Name)).
-                                                              DistinctBy(item => item.Name);
-        
+        result = result.GroupBy(item => item.Name)
+            .Select(group =>
+            {
+                var itemWithValue = group.FirstOrDefault(item => item.IsDefaultValue());
+                return itemWithValue ?? group.First();
+            }).ToList();
+
+        return result;
     }
 }
