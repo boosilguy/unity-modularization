@@ -12,12 +12,12 @@ using UnityEngine;
 [Serializable]
 public partial class SettingModuleManager : ModuleFoundation
 {
-    private Dictionary<ScriptFoundation, List<SettingAttribute>> itemsInScriptFoundation = new Dictionary<ScriptFoundation, List<SettingAttribute>>();
+    internal Dictionary<ScriptFoundation, List<SettingAttribute>> itemsInScriptFoundation = new Dictionary<ScriptFoundation, List<SettingAttribute>>();
     private Dictionary<string, SettingCallbackContainer> callbacksItemUpdate = new Dictionary<string, SettingCallbackContainer>();
 
+    public List<SettingAttribute> ItemsInRuntime => ItemsInSaved.Concat(ItemsInNew).OrderBy(item => item.Tag).ThenBy(item => item.Name).ToList();
     private List<SettingAttribute> ItemsInSaved { get; set; } = new List<SettingAttribute>();
     private List<SettingAttribute> ItemsInNew { get; set; } = new List<SettingAttribute>();
-    private List<SettingAttribute> ItemsInRuntime => ItemsInSaved.Concat(ItemsInNew).OrderBy(item => item.Tag).ThenBy(item => item.Name).ToList();
 
     bool init = false;
 
@@ -195,14 +195,14 @@ public partial class SettingModuleManager : ModuleFoundation
     private List<SettingAttribute> GetNewItems()
     {
         IEnumerable<string> itemNameInSaved = ItemsInSaved.Select(item => item.Name);
-        IEnumerable<SettingAttribute> foundNotExistInScript = GetAllSettingsInScripts().Where(setting => !itemNameInSaved.Contains(setting.Name))
+        IEnumerable<SettingAttribute> foundNotExistInSaved = GetAllSettingsInScripts().Where(setting => !itemNameInSaved.Contains(setting.Name))
             .GroupBy(item => item.Name)
             .Select(group =>
             {
                 var itemWithValue = group.FirstOrDefault(item => item.IsDefaultValue());
                 return itemWithValue ?? group.First();
             });
-        return foundNotExistInScript.ToList();
+        return foundNotExistInSaved.ToList();
     }
 
     /// <summary>
