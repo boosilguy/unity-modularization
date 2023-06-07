@@ -1,0 +1,16 @@
+{
+    "name": "Setting.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:85afd5a7651c0dc4b806af550465d28b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
