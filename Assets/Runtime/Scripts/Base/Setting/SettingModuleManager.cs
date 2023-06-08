@@ -24,9 +24,10 @@ namespace setting
         /// <summary>
         /// Setting module을 초기화합니다.
         /// </summary>
-        public void Initialize()
+        /// <param name="force">강제로 초기화할 것인지 여부</param>
+        public void Initialize(bool force = false)
         {
-            if (!init)
+            if (force || !force && !init)
             {
                 ClearAllContainer();
                 ItemsInSaved = Load();
@@ -37,9 +38,8 @@ namespace setting
 
         private void OnValidate()
         {
-            init = false;
             if (!Application.isPlaying)
-                Initialize();
+                Initialize(true);
         }
 
         /// <summary>
