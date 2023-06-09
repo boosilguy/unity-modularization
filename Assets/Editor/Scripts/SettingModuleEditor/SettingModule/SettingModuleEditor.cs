@@ -1,12 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using setting;
-using UnityEngine.UI;
 using System;
-using UnityEditor.EditorTools;
 
 public partial class SettingModuleEditor : EditorWindow
 {
@@ -74,7 +71,11 @@ public partial class SettingModuleEditor : EditorWindow
         EditorGUILayout.EndVertical();
         #endregion
 
-        EditorGUILayout.BeginVertical(style_Main_ViewerContainer);
+        EditorGUILayout.Space(25);
+
+        GUILayout.Label("Setting Utility", style_Main_Header);
+
+        EditorGUILayout.BeginVertical(style_Utility_Container);
         {
             OnDrawUtilityColumnHeader();
             OnDrawUtility();
@@ -115,31 +116,34 @@ public partial class SettingModuleEditor : EditorWindow
 
     private void OnDrawUtilityColumnHeader()
     {
-        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginHorizontal(style_Item_HeaderContainer);
+        GUILayout.FlexibleSpace();
         {
-            GUILayout.Label("Type");
-            GUILayout.Label("Tag");
-            GUILayout.Label("Name");
-            GUILayout.Label("Value");
+            GUILayout.Label("Type", style_Utility_TypeHeader);
+            GUILayout.Label("Tag", style_Utility_TagHeader);
+            GUILayout.Label("Name", style_Utility_NameHeader);
+            GUILayout.Label("Value", style_Utility_ValueHeader);
         }
+        GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
     }
 
     private void OnDrawUtility()
     {
-        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginHorizontal(style_Item_HeaderContainer);
+        GUILayout.FlexibleSpace();
         {
-            addSettingForm.SettingType = (ESettingType)EditorGUILayout.EnumPopup(addSettingForm.SettingType);
-            addSettingForm.SettingTag = EditorGUILayout.TextField(addSettingForm.SettingTag);
-            addSettingForm.SettingName = EditorGUILayout.TextField(addSettingForm.SettingName);
+            addSettingForm.SettingType = (ESettingType)EditorGUILayout.EnumPopup(addSettingForm.SettingType, style_Utility_Type);
+            addSettingForm.SettingTag = EditorGUILayout.TextField(addSettingForm.SettingTag, style_Utility_Tag);
+            addSettingForm.SettingName = EditorGUILayout.TextField(addSettingForm.SettingName, style_Utility_Name);
             
             ActionViaSettingType(addSettingForm.SettingType,
-                () => addSettingForm.SettingIntValue = EditorGUILayout.IntField(addSettingForm.SettingIntValue),
-                () => addSettingForm.SettingFloatValue = EditorGUILayout.FloatField(addSettingForm.SettingFloatValue),
-                () => addSettingForm.SettingStringValue = EditorGUILayout.TextField(addSettingForm.SettingStringValue),
-                () => addSettingForm.SettingBoolValue = EditorGUILayout.Toggle(addSettingForm.SettingBoolValue));
+                () => addSettingForm.SettingIntValue = EditorGUILayout.IntField(addSettingForm.SettingIntValue, style_Utility_IntValue),
+                () => addSettingForm.SettingFloatValue = EditorGUILayout.FloatField(addSettingForm.SettingFloatValue, style_Utility_FloatValue),
+                () => addSettingForm.SettingStringValue = EditorGUILayout.TextField(addSettingForm.SettingStringValue, style_Utility_StringValue),
+                () => addSettingForm.SettingBoolValue = EditorGUILayout.Toggle(addSettingForm.SettingBoolValue, style_Utility_BoolValue));
             
-            if (GUILayout.Button("Add"))
+            if (GUILayout.Button("Add", style_utility_AddBtn))
             {
                 if (String.IsNullOrEmpty(addSettingForm.SettingName))
                 {
@@ -163,6 +167,7 @@ public partial class SettingModuleEditor : EditorWindow
                 }
             }
         }
+        GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -201,6 +206,11 @@ public partial class SettingModuleEditor : EditorWindow
             case BoolAttribute boolAttribute:
                 @bool.Invoke(boolAttribute);
                 break;
+            default:
+                throw new NotImplementedException(RichTextUtil.GetColorfulText(
+                    new ColorfulText("Not implemented type ", Color.white),
+                    new ColorfulText($"{s.GetType()} ", Color.yellow),
+                    new ColorfulText("is not implemented", Color.white)));
         }
     }
 
@@ -220,6 +230,11 @@ public partial class SettingModuleEditor : EditorWindow
             case ESettingType.Bool:
                 @bool.Invoke();
                 break;
+            default:
+                throw new NotImplementedException(RichTextUtil.GetColorfulText(
+                    new ColorfulText("Not implemented type ", Color.white),
+                    new ColorfulText($"{type} ", Color.yellow),
+                    new ColorfulText("is not implemented", Color.white)));
         }
     }
 }

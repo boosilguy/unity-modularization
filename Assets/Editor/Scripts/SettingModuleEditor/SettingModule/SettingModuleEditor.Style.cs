@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +5,7 @@ public partial class SettingModuleEditor
 {
     GUIStyle style_Main_Header;
     GUIStyle style_Main_ViewerContainer;
+    GUIStyle style_Utility_Container;
 
     GUIStyle style_SettingTag_Header;
     GUIStyle style_Item_ViewerContainer;
@@ -23,6 +22,20 @@ public partial class SettingModuleEditor
     GUIStyle style_Item_Name;
     GUIStyle style_Item_Type;
     GUIStyle style_Item_UpdateBtn;
+
+    GUIStyle style_Utility_TypeHeader;
+    GUIStyle style_Utility_TagHeader;
+    GUIStyle style_Utility_NameHeader;
+    GUIStyle style_Utility_ValueHeader;
+
+    GUIStyle style_Utility_Type;
+    GUIStyle style_Utility_Tag;
+    GUIStyle style_Utility_Name;
+    GUIStyle style_Utility_IntValue;
+    GUIStyle style_Utility_FloatValue;
+    GUIStyle style_Utility_StringValue;
+    GUIStyle style_Utility_BoolValue;
+    GUIStyle style_utility_AddBtn;
 
     private void StyleInitialize()
     {
@@ -63,6 +76,14 @@ public partial class SettingModuleEditor
             margin = new RectOffset(20, 26, 0, 0),
         };
         style_Item_HeaderContainer.normal.background = Texture2D.linearGrayTexture;
+
+        style_Utility_Container = new GUIStyle(GUI.skin.box)
+        {
+            fixedHeight = 150f,
+
+            padding = new RectOffset(10, 10, 10, 10),
+            margin = new RectOffset(5, 5, 5, 5),
+        };
         #endregion
 
         #region Item Header
@@ -143,5 +164,80 @@ public partial class SettingModuleEditor
         };
         #endregion
 
+        #region Utility Header
+        style_Utility_TypeHeader = new GUIStyle(GUI.skin.label)
+        {
+            fixedWidth = STYLE_UTILITY_TYPEHEADER_WIDTH,
+
+            alignment= TextAnchor.MiddleCenter,
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+        };
+
+        style_Utility_TagHeader = new GUIStyle(GUI.skin.label)
+        {
+            fixedWidth = STYLE_UTILITY_TAGHEADER_WIDTH,
+
+            margin = new RectOffset(0, 75, 0, 0),
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+        };
+
+        style_Utility_NameHeader = new GUIStyle(GUI.skin.label)
+        {
+            fixedWidth = STYLE_UTILITY_NAMEHEADER_WIDTH,
+
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+        };
+
+        style_Utility_ValueHeader = new GUIStyle(GUI.skin.label)
+        {
+            fixedWidth = STYLE_UTILITY_VALUEHEADER_WIDTH,
+
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+        };
+        #endregion
+
+        #region Utility
+        style_Utility_Type = new GUIStyle(EditorStyles.popup)
+        {
+            fixedWidth = STYLE_UTILITY_TYPE_WIDTH,
+        };
+
+        style_Utility_Tag = new GUIStyle(GUI.skin.textField)
+        {
+            fixedWidth = STYLE_UTILITY_TAG_WIDTH,
+        };
+        style_Utility_Name = new GUIStyle(GUI.skin.textField)
+        {
+            fixedWidth = STYLE_UTILITY_NAME_WIDTH,
+        };
+
+        style_Utility_IntValue = new GUIStyle(EditorStyles.numberField)
+        {
+            fixedWidth = STYLE_UTILITY_VALUE_WIDTH,
+        };
+        style_Utility_FloatValue = new GUIStyle(EditorStyles.numberField)
+        {
+            fixedWidth = STYLE_UTILITY_VALUE_WIDTH,
+        };
+        style_Utility_StringValue = new GUIStyle(GUI.skin.textField)
+        { 
+            fixedWidth = STYLE_UTILITY_VALUE_WIDTH, 
+        };
+        style_Utility_BoolValue = new GUIStyle(GUI.skin.toggle)
+        {
+            fixedWidth = STYLE_UTILITY_VALUE_WIDTH,
+        };
+        style_utility_AddBtn = new GUIStyle(GUI.skin.button)
+        {
+            fixedWidth = STYLE_UTILITY_ADDBUTTON_WIDTH,
+        };
+        #endregion
     }
 }
