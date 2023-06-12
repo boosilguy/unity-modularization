@@ -10,6 +10,7 @@ public partial class SettingModuleEditor : EditorWindow
     private Vector2 scrollPosition_SettingViewer = Vector2.zero;
     private Dictionary<string, List<SettingAttribute>> settingsFilteredTag = new Dictionary<string, List<SettingAttribute>>();
     private Dictionary<string, object> inputPlaceholder = new Dictionary<string, object>();
+    private List<SettingRemoveTarget> removeTargets = new List<SettingRemoveTarget> ();
 
     private AddSettingForm addSettingForm = new AddSettingForm();
 
@@ -88,6 +89,7 @@ public partial class SettingModuleEditor : EditorWindow
         EditorGUILayout.BeginHorizontal(style_Item_HeaderContainer);
         GUILayout.FlexibleSpace();
         {
+            GUILayout.Label("Remove", style_Item_RemoveTarget);
             GUILayout.Label("Register state", style_Item_RegisteredHeader);
             GUILayout.Label("Name", style_Item_NameHeader);
             GUILayout.Label("Type", style_Item_TypeHeader);
@@ -103,6 +105,14 @@ public partial class SettingModuleEditor : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         var onlyInScript = SettingModule.ItemsInNew.Where(x => x == setting).Any();
+
+        EditorGUI.BeginDisabledGroup(onlyInScript);
+        {
+            var target = removeTargets.Where(item => item.item == setting).First();
+            bool remove = EditorGUILayout.Toggle(target.remove, GUILayout.Width(STYLE_ITEM_REMOVE_WIDTH));
+            target.remove = remove;
+        }
+        EditorGUI.EndDisabledGroup();
 
         ActionViaSettingType(setting,
             (intSetting) => OnDrawIntSettingItem(intSetting, onlyInScript),
@@ -171,21 +181,31 @@ public partial class SettingModuleEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        OnDrawSave();
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void OnDrawSave()
+    {
         if (GUILayout.Button("Save"))
         {
+            foreach (var target in removeTargets)
+                if (target.remove)
+                    SettingModule.RemoveSetting(target.item.Name);
+
             SettingModule.Save();
             Initialize(true);
         }
-        EditorGUILayout.EndHorizontal();
     }
 
     private void Initialize(bool forceForSettingModule = false)
     {
         SettingModule.Initialize(forceForSettingModule);
         inputPlaceholder.Clear();
-
+        
         settingsFilteredTag = SettingModule.ItemsInRuntime.GroupBy(item => item.Tag).ToDictionary(group => group.Key, group => group.ToList());
         settingsFilteredTag = settingsFilteredTag.Keys.OrderBy(tag => tag).ToDictionary(tag => tag, tag => settingsFilteredTag[tag]);
+        removeTargets = settingsFilteredTag.Values.SelectMany(item => item).Select(item => new SettingRemoveTarget(item, false)).ToList();
 
         addSettingForm = new AddSettingForm();
     }

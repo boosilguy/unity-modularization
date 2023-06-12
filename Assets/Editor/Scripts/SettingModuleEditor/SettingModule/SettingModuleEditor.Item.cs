@@ -5,6 +5,18 @@ using UnityEngine;
 
 public partial class SettingModuleEditor
 {
+    internal class SettingRemoveTarget
+    {
+        internal SettingAttribute item;
+        internal bool remove;
+
+        internal SettingRemoveTarget(SettingAttribute item, bool remove)
+        {
+            this.item = item;
+            this.remove = remove;
+        }
+    }
+
     private void OnDrawIntSettingItem(IntAttribute intAttribute, bool onlyInScript)
     {
         if (!inputPlaceholder.ContainsKey(intAttribute.Name))

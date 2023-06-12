@@ -138,6 +138,23 @@ namespace setting
             callbacksItemUpdate[settingName].Changed -= updateEvent;
         }
 
+        public void RemoveSetting(string settingName)
+        {
+            try
+            {
+                var item = ItemsInSaved.Where(item => item.Name == settingName).First();
+                ItemsInSaved.Remove(item);
+            }
+            catch (InvalidOperationException e)
+            {
+                Debug.LogWarning(
+                    RichTextUtil.GetColorfulText(
+                        new ColorfulText("[Not found] ", Color.red),
+                        new ColorfulText("The setting name is not found => ", Color.white),
+                        new ColorfulText(settingName, Color.yellow)));
+            }
+        }
+
         /// <summary>
         /// Setting 모듈의 Setting 컨테이너들을 초기화합니다.
         /// </summary>

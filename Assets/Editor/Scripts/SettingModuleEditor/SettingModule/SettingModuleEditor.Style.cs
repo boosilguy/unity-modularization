@@ -11,6 +11,7 @@ public partial class SettingModuleEditor
     GUIStyle style_Item_ViewerContainer;
 
     GUIStyle style_Item_HeaderContainer;
+    GUIStyle style_Item_RemoveTarget;
     GUIStyle style_Item_RegisteredHeader;
     GUIStyle style_Item_NameHeader;
     GUIStyle style_Item_TypeHeader;
@@ -73,7 +74,7 @@ public partial class SettingModuleEditor
 
         style_Item_HeaderContainer = new GUIStyle(GUI.skin.box)
         {
-            margin = new RectOffset(20, 26, 0, 0),
+            margin = new RectOffset(20, 33, 0, 0),
         };
         style_Item_HeaderContainer.normal.background = Texture2D.linearGrayTexture;
 
@@ -87,6 +88,14 @@ public partial class SettingModuleEditor
         #endregion
 
         #region Item Header
+        style_Item_RemoveTarget = new GUIStyle(GUI.skin.label)
+        {
+            fixedWidth = STYLE_ITEM_REMOVE_WIDTH,
+
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = 13,
+            fontStyle = FontStyle.Bold,
+        };
         style_Item_RegisteredHeader = new GUIStyle(GUI.skin.label)
         {
             fixedWidth = STYLE_ITEM_REGISTER_WIDTH,
