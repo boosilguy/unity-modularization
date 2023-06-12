@@ -1,0 +1,285 @@
+{
+  "$type": "System.Collections.Generic.List`1[[SettingAttribute, Base]], mscorlib",
+  "$values": [
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 10.0,
+      "Name": "ABCFloatValue",
+      "Tag": "ABCExample",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 10,
+      "Name": "ABCIntValue",
+      "Tag": "ABCExample",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 10,
+      "Name": "ABCIntValue2",
+      "Tag": "ABCExample",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 10,
+      "Name": "ABCIntValue3",
+      "Tag": "ABCExample",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 10.0,
+      "Name": "FloatValue1",
+      "Tag": "ExampleA",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 11.0,
+      "Name": "FloatValue2",
+      "Tag": "ExampleA",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 12.0,
+      "Name": "FloatValue3",
+      "Tag": "ExampleA",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 13.0,
+      "Name": "FloatValue4",
+      "Tag": "ExampleA",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 10,
+      "Name": "InteagerValue1",
+      "Tag": "ExampleA",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 11,
+      "Name": "InteagerValue2",
+      "Tag": "ExampleA",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 12,
+      "Name": "InteagerValue3",
+      "Tag": "ExampleA",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 13,
+      "Name": "InteagerValue4",
+      "Tag": "ExampleA",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "10 string",
+      "Name": "StringValue",
+      "Tag": "ExampleA",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "11 string",
+      "Name": "StringValue2",
+      "Tag": "ExampleA",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 14.0,
+      "Name": "FloatValue5",
+      "Tag": "ExampleB",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 15.0,
+      "Name": "FloatValue6",
+      "Tag": "ExampleB",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 16.0,
+      "Name": "FloatValue7",
+      "Tag": "ExampleB",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 17.0,
+      "Name": "FloatValue8",
+      "Tag": "ExampleB",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 14,
+      "Name": "InteagerValue5",
+      "Tag": "ExampleB",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 15,
+      "Name": "InteagerValue6",
+      "Tag": "ExampleB",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 16,
+      "Name": "InteagerValue7",
+      "Tag": "ExampleB",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 17,
+      "Name": "InteagerValue8",
+      "Tag": "ExampleB",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "12 string",
+      "Name": "StringValue3",
+      "Tag": "ExampleB",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "13 string",
+      "Name": "StringValue4",
+      "Tag": "ExampleB",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "14 string",
+      "Name": "StringValue5",
+      "Tag": "ExampleC",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "15 string",
+      "Name": "StringValue6",
+      "Tag": "ExampleC",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "16 string",
+      "Name": "StringValue7",
+      "Tag": "ExampleD",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "17 string",
+      "Name": "StringValue8",
+      "Tag": "ExampleD",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue",
+      "Tag": "ExampleE",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue2",
+      "Tag": "ExampleE",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue3",
+      "Tag": "ExampleF",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue4",
+      "Tag": "ExampleF",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue5",
+      "Tag": "ExampleG",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue6",
+      "Tag": "ExampleG",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue7",
+      "Tag": "ExampleH",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": true,
+      "Name": "BoolValue8",
+      "Tag": "ExampleH",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "BoolAttribute, Base",
+      "Value": false,
+      "Name": "OutsiderBool",
+      "Tag": "Outsider",
+      "TypeId": "BoolAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "FloatAttribute, Base",
+      "Value": 1.0,
+      "Name": "OutsiderFloat",
+      "Tag": "Outsider",
+      "TypeId": "FloatAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "IntAttribute, Base",
+      "Value": 1,
+      "Name": "OutsiderInt",
+      "Tag": "Outsider",
+      "TypeId": "IntAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    },
+    {
+      "$type": "StringAttribute, Base",
+      "Value": "1 string",
+      "Name": "OutsiderString",
+      "Tag": "Outsider",
+      "TypeId": "StringAttribute, Base, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+    }
+  ]
+}

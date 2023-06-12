@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 public delegate void Accept(ScriptFoundation scriptFoundation, MemberInfo member, object value);
 
@@ -12,7 +9,7 @@ public class SettingAttribute : Attribute
 {
     public string Name { get; set; }
     public string Tag { get; set; } = SettingModuleConstValue.DEFAULT_TAG;
-    internal object Value { get; set; }
+    public object Value { get; set; }
 
     [JsonIgnore] internal ScriptFoundation ScriptFoundation { get; set; }
     [JsonIgnore] internal MemberInfo Member { get; set; }
@@ -24,17 +21,6 @@ public class SettingAttribute : Attribute
         Tag = tag;
         Value = value;
         Accept = AcceptField;
-    }
-    internal virtual void SetValue(SettingAttribute setting)
-    {
-        if (this.GetType() == setting.GetType())
-            this.Value = setting.Value;
-        else
-            throw new ArgumentException(RichTextUtil.GetColorfulText(
-                new ColorfulText("Mismatch data types ", Color.white),
-                new ColorfulText($"{this.Name} ({this.Value})", Color.yellow),
-                new ColorfulText(" and ", Color.white),
-                new ColorfulText($"{setting.Name} ({setting.Value})", Color.yellow)));
     }
 
     public virtual bool IsDefaultValue()
@@ -104,17 +90,12 @@ public class SettingAttribute : Attribute
 
 public class IntAttribute : SettingAttribute
 {
-    internal new int Value { get; set; } = default;
+    public new int Value { get; set; } = default;
 
     [JsonConstructor]
     public IntAttribute (string name, string tag, int value) : base(name, value, tag)
     {
         Value = value;
-    }
-
-    internal override void SetValue(SettingAttribute setting)
-    {
-        base.SetValue(setting);
     }
 
     public override bool IsDefaultValue()
@@ -135,17 +116,12 @@ public class IntAttribute : SettingAttribute
 
 public class FloatAttribute : SettingAttribute
 {
-    internal new float Value { get; set; } = default;
+    public new float Value { get; set; } = default;
 
     [JsonConstructor]
     public FloatAttribute(string name, string tag, float value) : base(name, value, tag)
     {
         Value = value;
-    }
-
-    internal override void SetValue(SettingAttribute setting)
-    {
-        base.SetValue(setting);
     }
 
     public override bool IsDefaultValue()
@@ -166,17 +142,12 @@ public class FloatAttribute : SettingAttribute
 
 public class StringAttribute : SettingAttribute
 {
-    internal new string Value { get; set; } = default;
+    public new string Value { get; set; } = default;
 
     [JsonConstructor]
     public StringAttribute(string name, string tag, string value) : base(name, value, tag)
     {
         Value = value;
-    }
-
-    internal override void SetValue(SettingAttribute setting)
-    {
-        base.SetValue(setting);
     }
 
     public override bool IsDefaultValue()
@@ -197,17 +168,12 @@ public class StringAttribute : SettingAttribute
 
 public class BoolAttribute : SettingAttribute
 {
-    internal new bool Value { get; set; } = default;
+    public new bool Value { get; set; } = default;
 
     [JsonConstructor]
     public BoolAttribute(string name, string tag, bool value) : base(name, value, tag)
     {
         Value = value;
-    }
-
-    internal override void SetValue(SettingAttribute setting)
-    {
-        base.SetValue(setting);
     }
 
     public override bool IsDefaultValue()
