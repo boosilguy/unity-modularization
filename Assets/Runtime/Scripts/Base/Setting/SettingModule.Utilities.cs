@@ -54,7 +54,7 @@ namespace setting
                             item.Accept.Invoke(item.ScriptFoundation, item.Member, value);
 
                         if (callbacksItemUpdate.Keys.Contains(settingName))
-                            callbacksItemUpdate[settingName].Invoke(prevSettingValue, prevSettingValue);
+                            callbacksItemUpdate[settingName].Invoke(prevSettingValue, value);
                     }
                     else
                     {
