@@ -29,10 +29,14 @@ public class SettingModuleManagerTest
     }
 
     [Test]
-    public void SettingUpdateSimplePasses()
+    [TestCase("FloatValue1", 11f)]
+    [TestCase("FloatValue1", 12f)]
+    [TestCase("FloatValue1", 13f)]
+    public void SettingUpdateSimplePasses(string name, float value)
     {
-        settingModuleManager.AddUpdateEvent("FloatValue1", SettingExampleEvent);
-        settingModuleManager.UpdateSetting("FloatValue1", 11f);
+        settingModuleManager.AddUpdateEvent(name, SettingExampleEvent);
+        settingModuleManager.UpdateSetting(name, value);
+        settingModuleManager.RemoveUpdateEvent(name, SettingExampleEvent);
     }
 
     [UnityTest]
