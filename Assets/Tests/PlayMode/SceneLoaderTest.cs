@@ -8,22 +8,31 @@ using UnityEngine.TestTools;
 
 public class SceneLoaderTest
 {
-    private GameObject moduleManager;
+    private GameObject moduleManagerGameObject;
+    private ModuleManager moduleManager;
     public static string[] sceneName = { "SceneA" };
+    public static string[] moduleFoundation = { "SettingManagerModule" };
+
+    [UnitySetUp]
+    public IEnumerator SetUp()
+    {
+        yield return null;
+        moduleManagerGameObject = new GameObject("ModuleManager");
+        moduleManager = moduleManagerGameObject.AddComponent<ModuleManager>();
+    }
 
     [UnityTest]
     public IEnumerator SceneChange([ValueSource(nameof(sceneName))] string sceneName)
     {
-        moduleManager = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        moduleManager.AddComponent<ModuleManager>();
+        //ModuleInitUtil.InitModules(moduleManager);
 
-        Assert.IsTrue(moduleManager == GameObject.FindObjectOfType<ModuleManager>().gameObject);
-        Debug.Log($"InitializeScene => {moduleManager == GameObject.FindObjectOfType<ModuleManager>().gameObject}");
+        Assert.IsTrue(moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject);
+        Debug.Log($"InitializeScene => {moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject}");
 
         yield return null;
 
         SceneManager.LoadScene(sceneName);
-        Assert.IsTrue(moduleManager == GameObject.FindObjectOfType<ModuleManager>().gameObject);
-        Debug.Log($"{sceneName} => {moduleManager == GameObject.FindObjectOfType<ModuleManager>().gameObject}");
+        Assert.IsTrue(moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject);
+        Debug.Log($"{sceneName} => {moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject}");
     }
 }
