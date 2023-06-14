@@ -38,7 +38,7 @@ namespace setting
 
         private void OnValidate()
         {
-            if (!Application.isPlaying)
+            if (!EditorApplication.isPlayingOrWillChangePlaymode)
                 Initialize(true);
         }
 
