@@ -73,6 +73,11 @@ public class ModuleManager : MonoBehaviour
         return null;
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Update()
     {
         foreach(var module in modules)
