@@ -39,12 +39,6 @@ public class SettingModuleManagerTest
         settingModuleManager.RemoveUpdateEvent(name, SettingExampleEvent);
     }
 
-    [UnityTest]
-    public IEnumerator SettingModuleManagerTestWithEnumeratorPasses()
-    {
-        yield return null;
-    }
-
     private void SettingExampleEvent(object prev, object post)
     {
         Debug.Log($"{prev} (prev value) => {post} (post value)");
