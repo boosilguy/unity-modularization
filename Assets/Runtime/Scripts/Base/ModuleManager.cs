@@ -45,12 +45,6 @@ public class ModuleManager : MonoBehaviour
                 }
             }
 
-            Debug.LogError(
-                RichTextUtil.GetColorfulText(
-                    new ColorfulText("[Invalid module name] ", Color.red),
-                    new ColorfulText("Cannot get module ", Color.white),
-                    new ColorfulText(moduleName, Color.yellow)));
-
             return null;
         }
     }
@@ -62,13 +56,6 @@ public class ModuleManager : MonoBehaviour
             if (module.GetType().Equals(typeof(T))) 
                 return GetModule(module.GetType().Name) as T;
         }
-
-        Debug.LogError(
-                RichTextUtil.GetColorfulText(
-                    new ColorfulText("[Invalid module type] ", Color.red),
-                    new ColorfulText("Cannot get module ", Color.white),
-                    new ColorfulText(typeof(T).Name, Color.yellow),
-                    new ColorfulText(" type", Color.white)));
 
         return null;
     }
