@@ -17,8 +17,16 @@ public class ModuleInitUtil
             types.AddRange(assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ModuleFoundation)) && Attribute.IsDefined(t, typeof(SerializableAttribute))));
         }
 
+        // 작업하다 말았음
         foreach (var type in types)
         {
+            var objects = Resources.FindObjectsOfTypeAll(type);
+
+            foreach (var obj in objects)
+            {
+                Debug.Log($"[Prefix] {obj}");
+            }
+
             var moduleInstance = Activator.CreateInstance(type) as ModuleFoundation;
             moduleManager.modules.Add(moduleInstance);
             Debug.Log(

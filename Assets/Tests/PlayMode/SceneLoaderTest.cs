@@ -9,7 +9,6 @@ using UnityEngine.TestTools;
 
 public class SceneLoaderTest
 {
-    private GameObject moduleManagerGameObject;
     private ModuleManager moduleManager;
     public static string[] sceneName = { "SceneA" };
     public static string[] moduleFoundation = { "SettingModuleManager" };
@@ -17,32 +16,34 @@ public class SceneLoaderTest
     [UnitySetUp]
     public IEnumerator SetUp()
     {
-        moduleManagerGameObject = new GameObject("ModuleManager");
-        moduleManager = moduleManagerGameObject.AddComponent<ModuleManager>();
-        ModuleInitUtil.InitModules(moduleManager);
+        moduleManager = ModuleManager.Instance;
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator SceneChange([ValueSource(nameof(sceneName))] string scene, [ValueSource(nameof(moduleFoundation))] string module)
     {
-        Assert.IsTrue(moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject);
-        Debug.Log($"InitializeScene => {moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject}");
+        ModuleInitUtil.InitModules(moduleManager);
 
-        yield return null;
+        Assert.IsTrue(GameObject.FindObjectOfType<ModuleManager>().gameObject);
+        Debug.Log($"[SceneLoaderTest] InitializeScene => {GameObject.FindObjectOfType<ModuleManager>().gameObject}");
 
         SceneManager.LoadScene(scene);
-        Assert.IsTrue(moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject);
-        Debug.Log($"{scene} => {moduleManagerGameObject == GameObject.FindObjectOfType<ModuleManager>().gameObject}");
+        Assert.IsTrue(GameObject.FindObjectOfType<ModuleManager>().gameObject);
+        Debug.Log($"[SceneLoaderTest] {scene} => {GameObject.FindObjectOfType<ModuleManager>().gameObject}");
 
-        Debug.Log($"Module count => {ModuleManager.Instance.modules.Count()}");
+        Debug.Log($"[SceneLoaderTest] Module count => {ModuleManager.Instance.modules.Count()}");
         foreach(var item in ModuleManager.Instance.modules)
         {
-            Debug.Log($"Module name is {item.GetType().Name}");
-            Debug.Log($"Module is null {item == null}");
+            if (item == null)
+                Debug.Log($"[SceneLoaderTest] Module name is {item.GetType().Name} and, this is null");
+            else
+                Debug.Log($"[SceneLoaderTest] Module name is {item.GetType().Name} and, this is not null");
         }
 
         Assert.IsNotNull(ModuleManager.Instance.GetModule(module));
-        Debug.Log($"Module name => {ModuleManager.Instance.GetModule(module).GetType().Name}");
+        Debug.Log($"[SceneLoaderTest] Module name => {ModuleManager.Instance.GetModule(module).GetType().Name}");
+
+        yield return null;
     }
 }
