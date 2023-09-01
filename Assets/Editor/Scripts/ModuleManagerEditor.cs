@@ -27,13 +27,7 @@ public class ModuleManagerEditor : Editor
                 onReorderCallback = OnReorder,
                 elementHeightCallback = CalculateCallHeight
             };
-
-        if (modules.isExpanded)
-        {
-            list.DoLayoutList();
-        }
-        
-        
+        list.DoLayoutList();
         if (GUILayout.Button("Reload modules"))
         {
             ModuleInitUtil.InitModules(manager);
