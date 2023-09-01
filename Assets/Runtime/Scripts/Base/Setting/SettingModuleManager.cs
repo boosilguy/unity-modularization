@@ -21,6 +21,11 @@ namespace setting
 
         bool init = false;
 
+        protected override void Awake()
+        {
+            
+        }
+
         /// <summary>
         /// Setting module을 초기화합니다.
         /// </summary>
