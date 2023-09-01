@@ -1,12 +1,12 @@
+using setting;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using setting;
 
-public class ScriptableObjectFoundation : ScriptableObject, ScriptFoundation
+public class MonoBehaviourFoundation : MonoBehaviour, IScriptFoundation
 {
     protected SettingModuleManager SettingModuleManager => ModuleManager.Instance?.GetModule("SettingModuleManager") as SettingModuleManager;
-    
+
     protected virtual void Awake()
     {
         SettingModuleManager?.AcceptScriptFoundation(this);

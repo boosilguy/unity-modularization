@@ -6,13 +6,13 @@ namespace setting
 {
     public partial class SettingModuleManager : ModuleFoundation
     {
-        private void AcceptAttribute(ScriptFoundation scriptFoundation, SettingAttribute attribute, MemberInfo member, object value) => attribute.Accept.Invoke(scriptFoundation, member, value);
+        private void AcceptAttribute(IScriptFoundation scriptFoundation, SettingAttribute attribute, MemberInfo member, object value) => attribute.Accept.Invoke(scriptFoundation, member, value);
 
         /// <summary>
         /// 대상 클래스에 사용된 SettingAttribute를 인식하여 값을 대입합니다.
         /// </summary>
         /// <param name="scriptFoundation">ScriptFoundation을 구현한 클래스</param>
-        public void AcceptScriptFoundation(ScriptFoundation scriptFoundation)
+        public void AcceptScriptFoundation(IScriptFoundation scriptFoundation)
         {
             Initialize();
 

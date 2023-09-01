@@ -60,11 +60,6 @@ public class ModuleManager : MonoBehaviour
         return null;
     }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     private void Update()
     {
         foreach(var module in modules)
@@ -74,7 +69,7 @@ public class ModuleManager : MonoBehaviour
     private void OnDestroy()
     {
         foreach (var module in modules)
-            module?.Process(ETransition.Destroy);
+            module?.Process(ETransitionCommand.Destroy);
 
         instance = null;
     }

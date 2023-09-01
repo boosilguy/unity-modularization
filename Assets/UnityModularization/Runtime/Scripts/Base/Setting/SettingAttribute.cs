@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public delegate void Accept(ScriptFoundation scriptFoundation, MemberInfo member, object value);
+public delegate void Accept(IScriptFoundation scriptFoundation, MemberInfo member, object value);
 
 public class SettingAttribute : Attribute
 {
@@ -11,7 +11,7 @@ public class SettingAttribute : Attribute
     public string Tag { get; set; } = SettingModuleConstValue.DEFAULT_TAG;
     public object Value { get; set; }
 
-    [JsonIgnore] internal ScriptFoundation ScriptFoundation { get; set; }
+    [JsonIgnore] internal IScriptFoundation ScriptFoundation { get; set; }
     [JsonIgnore] internal MemberInfo Member { get; set; }
     [JsonIgnore] internal Accept Accept { get; set; }
 
@@ -28,7 +28,7 @@ public class SettingAttribute : Attribute
         return Value == default;
     }
 
-    internal virtual void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    internal virtual void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member)
     {
         FieldInfo fieldInfo = member as FieldInfo;
         if (fieldInfo != null)
@@ -57,7 +57,7 @@ public class SettingAttribute : Attribute
         }
     }
 
-    internal virtual void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member, object value)
+    internal virtual void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member, object value)
     {
         FieldInfo fieldInfo = member as FieldInfo;
         if (fieldInfo != null)
@@ -103,12 +103,12 @@ public class IntAttribute : SettingAttribute
         return base.IsDefaultValue();
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member)
     {
         base.AcceptField(scriptFoundation, member);
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member, object value)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member, object value)
     {
         base.AcceptField(scriptFoundation, member, (int)value);
     }
@@ -129,12 +129,12 @@ public class FloatAttribute : SettingAttribute
         return base.IsDefaultValue();
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member)
     {
         base.AcceptField(scriptFoundation, member);
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member, object value)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member, object value)
     {
         base.AcceptField(scriptFoundation, member, (float)value);
     }
@@ -155,12 +155,12 @@ public class StringAttribute : SettingAttribute
         return base.IsDefaultValue();
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member)
     {
         base.AcceptField(scriptFoundation, member);
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member, object value)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member, object value)
     {
         base.AcceptField(scriptFoundation, member, (string)value);
     }
@@ -181,12 +181,12 @@ public class BoolAttribute : SettingAttribute
         return base.IsDefaultValue();
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member)
     {
         base.AcceptField(scriptFoundation, member);
     }
 
-    internal override void AcceptField(ScriptFoundation scriptFoundation, MemberInfo member, object value)
+    internal override void AcceptField(IScriptFoundation scriptFoundation, MemberInfo member, object value)
     {
         base.AcceptField(scriptFoundation, member, (bool)value);
     }

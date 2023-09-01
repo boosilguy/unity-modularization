@@ -11,7 +11,7 @@ public enum EModuleState
     Destroyed
 }
 
-public enum ETransition
+public enum ETransitionCommand
 {
     Initialize,
     None,
@@ -30,20 +30,20 @@ public class ModuleFoundation : ScriptableObjectFoundation
 
     struct StateTransition
     {
-        readonly ETransition CurrentTransition;
+        readonly ETransitionCommand CurrentCommand;
         readonly EModuleState CurrentState;
         
-        public StateTransition(EModuleState state, ETransition transition)
+        public StateTransition(EModuleState state, ETransitionCommand transition)
         {
             CurrentState = state;
-            CurrentTransition = transition;
+            CurrentCommand = transition;
         }
 
-        public override int GetHashCode() => 17 + 31 * CurrentState.GetHashCode() + 31 * CurrentTransition.GetHashCode();
+        public override int GetHashCode() => 17 + 31 * CurrentState.GetHashCode() + 31 * CurrentCommand.GetHashCode();
 
         public override bool Equals(object obj) => obj is StateTransition other && this.Equals(other);
 
-        public bool Equals(StateTransition other) => CurrentState == other.CurrentState && CurrentTransition == other.CurrentTransition;
+        public bool Equals(StateTransition other) => CurrentState == other.CurrentState && CurrentCommand == other.CurrentCommand;
     }
 
     public ModuleFoundation()
@@ -53,17 +53,17 @@ public class ModuleFoundation : ScriptableObjectFoundation
         transitions = new Dictionary<StateTransition, EModuleState>();
         lifeCycleActions = new Dictionary<EModuleState, ModuleLifeCycle>();
         
-        transitions.Add(new StateTransition(EModuleState.Created, ETransition.Initialize), EModuleState.Inactive);
-        transitions.Add(new StateTransition(EModuleState.Inactive, ETransition.None), EModuleState.Active);
-        transitions.Add(new StateTransition(EModuleState.Active, ETransition.None), EModuleState.Active);
-        transitions.Add(new StateTransition(EModuleState.Inactive, ETransition.Destroy), EModuleState.Destroyed);
-        transitions.Add(new StateTransition(EModuleState.Active, ETransition.Destroy), EModuleState.Destroyed);
+        transitions.Add(new StateTransition(EModuleState.Created, ETransitionCommand.Initialize), EModuleState.Inactive);
+        transitions.Add(new StateTransition(EModuleState.Inactive, ETransitionCommand.None), EModuleState.Active);
+        transitions.Add(new StateTransition(EModuleState.Active, ETransitionCommand.None), EModuleState.Active);
+        transitions.Add(new StateTransition(EModuleState.Inactive, ETransitionCommand.Destroy), EModuleState.Destroyed);
+        transitions.Add(new StateTransition(EModuleState.Active, ETransitionCommand.Destroy), EModuleState.Destroyed);
         
         lifeCycleActions.Add(EModuleState.Inactive, ModuleInitialize);
         lifeCycleActions.Add(EModuleState.Active, ModuleUpdate);
         lifeCycleActions.Add(EModuleState.Destroyed, ModuleTerminate);
         
-        Process(ETransition.Initialize);
+        Process(ETransitionCommand.Initialize);
     }
 
     public void RunOnMainThread(params Action[] action)
@@ -90,7 +90,7 @@ public class ModuleFoundation : ScriptableObjectFoundation
 
     }
 
-    internal void Process(ETransition transition = ETransition.None)
+    internal void Process(ETransitionCommand transition = ETransitionCommand.None)
     {
         StateTransition stateTransition = new StateTransition(CurrentState, transition);
         EModuleState nextState;

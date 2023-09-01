@@ -25,12 +25,19 @@ public class SceneLoaderTest
     {
         ModuleInitUtil.InitModules(moduleManager);
 
-        Assert.IsTrue(GameObject.FindObjectOfType<ModuleManager>().gameObject);
-        Debug.Log($"[SceneLoaderTest] InitializeScene => {GameObject.FindObjectOfType<ModuleManager>().gameObject}");
+        Assert.IsTrue(moduleManager.gameObject);
+        Debug.Log($"[SceneLoaderTest] InitializeScene => {moduleManager.gameObject.name}");
 
-        SceneManager.LoadScene(scene);
-        Assert.IsTrue(GameObject.FindObjectOfType<ModuleManager>().gameObject);
-        Debug.Log($"[SceneLoaderTest] {scene} => {GameObject.FindObjectOfType<ModuleManager>().gameObject}");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        moduleManager = ModuleManager.Instance;
+        Assert.IsTrue(moduleManager.gameObject);
+        Debug.Log($"[SceneLoaderTest] {scene} => {moduleManager.gameObject.name}");
 
         Debug.Log($"[SceneLoaderTest] Module count => {ModuleManager.Instance.modules.Count()}");
         foreach(var item in ModuleManager.Instance.modules)
@@ -42,7 +49,7 @@ public class SceneLoaderTest
         }
 
         Assert.IsNotNull(ModuleManager.Instance.GetModule(module));
-        Debug.Log($"[SceneLoaderTest] Module name => {ModuleManager.Instance.GetModule(module).GetType().Name}");
+        Debug.Log($"[SceneLoaderTest] Module name => {moduleManager.GetModule(module).GetType().Name}");
 
         yield return null;
     }
