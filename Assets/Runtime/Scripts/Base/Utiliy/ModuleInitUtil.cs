@@ -13,13 +13,14 @@ public class ModuleInitUtil
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         List<Type> types = new List<Type>();
         foreach(var assembly in assemblies)
-        {
             types.AddRange(assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(ModuleFoundation)) && Attribute.IsDefined(t, typeof(SerializableAttribute))));
-        }
+        
+        // SettingModuleManager를 가장 먼저 호출합니다.
+        types = types.OrderBy(setting => setting.FullName != "SettingModuleManager" && setting.Name != "SettingModuleManager").ToList();
 
         foreach (var type in types)
         {
-            var moduleInstance = Activator.CreateInstance(type) as ModuleFoundation;
+            var moduleInstance = ScriptableObject.CreateInstance(type) as ModuleFoundation;
             moduleManager.modules.Add(moduleInstance);
             Debug.Log(
                 RichTextUtil.GetColorfulText(
@@ -27,7 +28,6 @@ public class ModuleInitUtil
                     new ColorfulText(moduleInstance.GetType().FullName, Color.yellow)));
         }
 
-        EditorUtility.SetDirty(moduleManager);
         Debug.Log(
                 RichTextUtil.GetColorfulText(
                     new ColorfulText("Initialized module count : ", Color.white),
