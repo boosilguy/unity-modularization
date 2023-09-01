@@ -37,6 +37,7 @@ public class ModuleManagerEditor : Editor
         if (GUILayout.Button("Reload modules"))
         {
             ModuleInitUtil.InitModules(manager);
+            EditorUtility.SetDirty(manager);
         }
 
         serializedObject.ApplyModifiedProperties();
